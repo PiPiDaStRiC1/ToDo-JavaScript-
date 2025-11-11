@@ -33,6 +33,25 @@
     changeThemeBtn.addEventListener('click', changeTheme);
     todoAddText.addEventListener('keydown', addTodoWithEnter);
 
+    function saveOrder() {
+        const ids = [...todosList.querySelectorAll('.todo__input')]
+            .map(item => Number(item.dataset.id));
+        
+        const storageTodosList = JSON.parse(localStorage.getItem('todoList')) || [];
+
+        // All elements which include in DOM now
+        const reordered = ids
+            .map(id => storageTodosList.find(([_, __, todoId]) => Number(todoId) === id));
+
+        // Show hidden fields which don`t include in DOM now (especially important for all-sort)
+        // (save to global storageTodosList in local storage)
+        const remaining = storageTodosList.filter(([_, __, id]) => !ids.includes(Number(id)));
+
+        // Save order of appearing elements -> at first visible, then hidden
+        localStorage.setItem('todoList', JSON.stringify([...reordered, ...remaining]));
+    }
+
+
     // Drag and Drop
     todosList.addEventListener('dragstart', (event) => {
         if (event.target.classList.contains('todo__input'))
@@ -41,18 +60,7 @@
     todosList.addEventListener('dragend', (event) => {
         if (event.target.classList.contains('todo__input')) {
             event.target.classList.remove('selected');
-            
-            sortAllBtn.classList.contains('activeBtn') ? updateTodoSmth('todo__input') : null;
-            const newStorageTodosList = [...todoInputs].map(todoInput => {
-                return [
-                    todoInput.children[1].value, 
-                    todoInput.classList.contains('completedTodo') ? 
-                        'completedTodo' :
-                        'activeTodo',
-                    todoInput.getAttribute('data-id')
-                ];
-            });
-            localStorage.setItem('todoList', JSON.stringify(newStorageTodosList));
+            saveOrder();
         }
     });
     todosList.addEventListener('dragover', (event) => {
@@ -214,7 +222,6 @@
     
     function showTodosAndChangeTheme() {
         changeTheme(event, false);
-    
         const storageTodosList = JSON.parse(localStorage.getItem('todoList')) || [];
     
         storageTodosList.forEach(([text, className, id]) => {
@@ -245,12 +252,11 @@
     }
     
     function addTodo(text, className, id = null, isUpdate = true) {
-    
         // If user adds todo in a sort field -> Btn All (active) and sort all to see all todos
-        if (!sortAllBtn.classList.contains('activeBtn')) {
-            resetParamBtns();
-            sort.call(sortAllBtn);
-        }
+        // if (!sortAllBtn.classList.contains('activeBtn')) {
+        //     resetParamBtns();
+        //     sort.call(sortAllBtn);
+        // }
     
         
         id =  Number(id) || Date.now();
@@ -432,12 +438,13 @@
         cross.parentNode.classList.add('fadeOut');
         setTimeout(() => {
             cross.parentNode.classList.remove('fadeOut');
+
             // Delete node from localStorage
-            const storageTodoList = JSON.parse(localStorage.getItem('todoList')) || [];
-            const newStorageTodoList = storageTodoList.filter(([_, className, id]) => {
+            const storageTodosList = JSON.parse(localStorage.getItem('todoList')) || [];
+            const newstorageTodosList = storageTodosList.filter(([_, className, id]) => {
                 if (Number(todoId) !== Number(id)) return [_, className, id];
             });
-            localStorage.setItem('todoList', JSON.stringify([...newStorageTodoList]));
+            localStorage.setItem('todoList', JSON.stringify([...newstorageTodosList]));
         
             const removeTodoIndex = [...todoInputs].findIndex(todoInput => Number(todoInput.getAttribute('data-id')) === Number(todoId));
             todoInputs[removeTodoIndex].remove(); // delete node from DOM
@@ -468,8 +475,16 @@
         let inputCount = 0;
         todosList.innerHTML = '';
 
-        todoInputs.forEach(todoInput => {
-            if (todoInput.classList.contains(className)) {todosList.append(todoInput); inputCount++};
+        const storageTodosList = JSON.parse(localStorage.getItem('todoList')) || [];
+        storageTodosList.forEach(([text, todoClass, id]) => {
+            if (
+                className === 'todo__input' || 
+                (className === 'activeTodo' && todoClass === 'activeTodo') ||
+                (className === 'completedTodo' && todoClass === 'completedTodo')
+            ) {
+                addTodo(text, todoClass, id, false);
+                inputCount++;
+            }
         });
 
         createSmthField(smthFieldText, inputCount);
@@ -486,10 +501,10 @@
     
         // Delete completed from local storage
         const storageTodosList = JSON.parse(localStorage.getItem('todoList')) || [];
-        const newStorageTodoList = storageTodosList.filter(([_, className, id]) => {
+        const newstorageTodosList = storageTodosList.filter(([_, className, id]) => {
             if (className !== 'completedTodo') return [_, className, id];
         });
-        localStorage.setItem('todoList', JSON.stringify([...newStorageTodoList]));
+        localStorage.setItem('todoList', JSON.stringify([...newstorageTodosList]));
     
         removeSmthField();
     
