@@ -5,10 +5,10 @@ A web application to help you manage your daily tasks. 🎯
 ## 📸 Screenshots
 
 ### Desktop View 
-![Desktop View Light](./assets/preview/desktop-view-dark.png)
+![Desktop View Light](./assets/preview/desktop-dark.png)
 
 ### Mobile View 
-![Mobile View](./assets/preview/mobile-view-light.png)
+![Mobile View](./assets/preview/mobile-light.png)
 
 ## 🔥 Features
 
