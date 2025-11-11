@@ -17,6 +17,7 @@ A web application to help you manage your daily tasks. 🎯
 *   **📝 Edit Task:** Change the text of your task
 *   **❌ Delete Task:** Remove a task from the list
 *   **🔍 Filter Tasks:** Show All, Active, or Completed tasks
+*   **🫳 Drag&Drop Tasks:** Move tasks in Task-list
 
 ## 💻 Tech Stack
 
