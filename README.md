@@ -31,9 +31,8 @@ Requirements:
 - Node.js (recommended >= 14)
 - npm (bundled with Node.js)
 
-1) Install dependencies:
+1) Install dependencies (don`t forget to change directory (cd)):
 ```powershell
-cd c:\Users\artem\HTML\toDo\ToDo-JavaScript-
 npm install
 ```
 
