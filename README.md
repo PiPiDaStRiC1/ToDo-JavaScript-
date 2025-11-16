@@ -21,9 +21,9 @@ A web application to help you manage your daily tasks. 🎯
 
 ## 💻 Tech Stack
 
-*   **Frontend:** HTML, CSS, JavaScript  
-*   **Styling:** SCSS/CSS  
-*   **Bundler:** Parcel
+*   **📄 Frontend:** HTML, CSS, JavaScript  
+*   **🎨 Styling:** SCSS/CSS  
+*   **📦 Bundler:** Parcel
 
 ## 🚀 Run the project
 
@@ -31,9 +31,8 @@ Requirements:
 - Node.js (recommended >= 14)
 - npm (bundled with Node.js)
 
-1) Install dependencies:
+1) Install dependencies (don`t forget to change directory (cd)):
 ```powershell
-cd c:\Users\artem\HTML\toDo\ToDo-JavaScript-
 npm install
 ```
 
